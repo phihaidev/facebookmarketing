@@ -104,9 +104,12 @@ WORKDATA="${WORKDIR}/data.txt"
 mkdir $WORKDIR && cd $_
 
 IP4=$(curl -4 -s icanhazip.com)
-IP6=$(curl -6 -s icanhazip.com | cut -f1-4 -d':')
+IP6=$(curl -6 -s icanhazip.com)
+IP6Random=$(curl -6 -s icanhazip.com | cut -f1-4 -d':')
 
-echo "Internal ip = ${IP4}. Exteranl sub for ip6 = ${IP6}"
+echo "IPv4 Của Bạn = ${IP4}"
+echo "IPv6 Của Bạn = ${IP6}"
+echo "IPv6 Random 4 : Đầu = ${IP6Random}"
 
 echo "Bạn Muốn Tạo Bao Nhiêu Proxy? 1GB Ram Cho 3000 Proxy"
 read COUNT
