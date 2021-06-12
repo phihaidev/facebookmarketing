@@ -71,15 +71,10 @@ $(awk -F "/" '{print $3 ":" $4 ":" $1 ":" $2 }' ${WORKDATA})
 EOF
 }
 
-upload_proxy() {
-    cd $WORKDIR
-    local PASS=$(random)
-    zip --password $PASS proxy.zip proxy.txt
-    URL=$(curl -F "file=@proxy.zip" https://file.io)
-
-    echo "Proxy is ready! Format IP:PORT:LOGIN:PASS"
-    echo "Download zip archive from: ${URL}"
-    echo "Password: ${PASS}"
+export_proxy() {
+    echo "Proxy Sẵn Sàng Để Sử Dụng! Định Dạng Proxy IP:PORT:LOGIN:PASS"
+    echo "Vào Đường Dẫn Thư Mục Sau /home/proxy-installer"
+    echo "Mở File Proxy.txt Để Lấy Proxy Hoặc Tải File Proxy.txt về và sử dụng"
 
 }
 gen_data() {
@@ -114,10 +109,10 @@ IP6=$(curl -6 -s icanhazip.com | cut -f1-4 -d':')
 
 echo "Internal ip = ${IP4}. Exteranl sub for ip6 = ${IP6}"
 
-echo "How many proxy do you want to create? Example 500"
+echo "Bạn Muốn Tạo Bao Nhiêu Proxy? 1GB Ram Cho 3000 Proxy"
 read COUNT
 
-FIRST_PORT=10400
+FIRST_PORT=10000
 LAST_PORT=$(($FIRST_PORT + $COUNT))
 
 gen_data >$WORKDIR/data.txt
@@ -140,4 +135,4 @@ bash /etc/rc.local
 
 gen_proxy_file_for_user
 
-upload_proxy
+export_proxy
