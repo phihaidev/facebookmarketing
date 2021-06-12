@@ -78,7 +78,7 @@ export_proxy() {
 }
 gen_data() {
     seq $FIRST_PORT $LAST_PORT | while read port; do
-        echo "$(random)/$(random)/$IP4/$port/$(gen64 $IP6)"
+        echo "$(random)/$(random)/$IPv4/$port/$(gen64 $IPv6)"
     done
 }
 
@@ -103,13 +103,13 @@ WORKDIR="/home/proxy-installer"
 WORKDATA="${WORKDIR}/data.txt"
 mkdir $WORKDIR && cd $_
 
-IP4=$(curl -4 -s icanhazip.com)
+IPv4=$(curl -4 -s icanhazip.com)
 IPv6=$(curl -6 -s icanhazip.com)
-IP6=$(curl -6 -s icanhazip.com | cut -f1-4 -d':')
+IPv6Random=$(curl -6 -s icanhazip.com | cut -f1-4 -d':')
 
-echo "IPv4 = ${IP4}. Exteranl sub for ip6 = ${IP6}"
+echo "IPv4 = ${IPv4}"
 echo "IPv6 = ${IPv6}"
-echo "IPv6 Random 4 : Cuối = ${IP6}"
+echo "IPv6 Random 4 : Cuối = ${IPv6Random}"
 
 echo "Bạn Muốn Tạo Bao Nhiêu Proxy? 1GB Ram Cho 3000 Proxy"
 read COUNT
