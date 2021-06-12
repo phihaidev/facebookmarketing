@@ -94,7 +94,7 @@ gen_ifconfig() {
 $(awk -F "/" '{print "ifconfig enp1s0 inet6 add " $5 "/64"}' ${WORKDATA})
 EOF
 }
-echo "installing apps"
+echo "Cài Đặt Hệ Thống Proxy"
 yum -y install gcc net-tools bsdtar zip make >/dev/null
 
 install_3proxy
