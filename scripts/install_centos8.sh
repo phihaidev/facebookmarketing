@@ -12,7 +12,7 @@ gen64() {
 	echo "$1:$(ip64):$(ip64):$(ip64):$(ip64)"
 }
 install_3proxy() {
-    echo "installing 3proxy"
+    echo "Đang Cài Đặt 3Proxy"
     mkdir -p /3proxy
     cd /3proxy
     URL="https://github.com/z3APA3A/3proxy/archive/0.9.3.tar.gz"
@@ -67,7 +67,7 @@ EOF
 
 gen_proxy_file_for_user() {
     cat >proxy.txt <<EOF
-$(awk -F ":" '{print $1 ":" $2 ":" $3 ":" $4 }' ${WORKDATA})
+$(awk -F "/" '{print $3 ":" $4 ":" $1 ":" $2 }' ${WORKDATA})
 EOF
 }
 
@@ -75,11 +75,10 @@ export_proxy() {
     echo "Proxy Sẵn Sàng Để Sử Dụng! Định Dạng Proxy IP:PORT:LOGIN:PASS"
     echo "Vào Đường Dẫn Thư Mục Sau /home/proxy-installer"
     echo "Mở File Proxy.txt Để Lấy Proxy Hoặc Tải File Proxy.txt về và sử dụng"
-
 }
 gen_data() {
     seq $FIRST_PORT $LAST_PORT | while read port; do
-        echo "$IP4:$port:$(random):$(random):$(gen64 $IP6)"
+        echo "$(random)/$(random)/$IP4/$port/$(gen64 $IP6)"
     done
 }
 
@@ -94,7 +93,7 @@ gen_ifconfig() {
 $(awk -F "/" '{print "ifconfig enp1s0 inet6 add " $5 "/64"}' ${WORKDATA})
 EOF
 }
-echo "Cài Đặt Hệ Thống Proxy"
+echo "Đang Cài Đặt Hệ Thống Proxy"
 yum -y install gcc net-tools bsdtar zip make >/dev/null
 
 install_3proxy
