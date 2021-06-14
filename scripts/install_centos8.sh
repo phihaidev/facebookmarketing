@@ -12,7 +12,7 @@ gen64() {
 	echo "$1:$(ip64):$(ip64):$(ip64):$(ip64)"
 }
 install_3proxy() {
-    echo "Đang Cài Đặt 3Proxy"
+    echo "installing 3proxy"
     mkdir -p /3proxy
     cd /3proxy
     URL="https://github.com/z3APA3A/3proxy/archive/0.9.3.tar.gz"
@@ -71,14 +71,20 @@ $(awk -F "/" '{print $3 ":" $4 ":" $1 ":" $2 }' ${WORKDATA})
 EOF
 }
 
-export_proxy() {
-    echo "Proxy Sẵn Sàng Để Sử Dụng! Định Dạng Proxy IP:PORT:LOGIN:PASS"
-    echo "Vào Đường Dẫn Thư Mục Sau /home/proxy-installer"
-    echo "Mở File Proxy.txt Để Lấy Proxy Hoặc Tải File Proxy.txt về và sử dụng"
+upload_proxy() {
+    cd $WORKDIR
+    local PASS=$(random)
+    zip --password $PASS proxy.zip proxy.txt
+    URL=$(curl -F "file=@proxy.zip" https://file.io)
+
+    echo "Proxy is ready! Format IP:PORT:LOGIN:PASS"
+    echo "Download zip archive from: ${URL}"
+    echo "Password: ${PASS}"
+
 }
 gen_data() {
     seq $FIRST_PORT $LAST_PORT | while read port; do
-        echo "$(random)/$(random)/$IPv4/$port/$(gen64 $IPv6)"
+        echo "$(random)/$(random)/$IP4/$port/$(gen64 $IP6)"
     done
 }
 
@@ -93,7 +99,7 @@ gen_ifconfig() {
 $(awk -F "/" '{print "ifconfig enp1s0 inet6 add " $5 "/64"}' ${WORKDATA})
 EOF
 }
-echo "Đang Cài Đặt Hệ Thống Proxy"
+echo "installing apps"
 yum -y install gcc net-tools bsdtar zip make >/dev/null
 
 install_3proxy
@@ -103,13 +109,10 @@ WORKDIR="/home/proxy-installer"
 WORKDATA="${WORKDIR}/data.txt"
 mkdir $WORKDIR && cd $_
 
-IPv4=$(curl -4 -s icanhazip.com)
-IPv6=$(curl -6 -s icanhazip.com)
-IPv6Random=$(curl -6 -s icanhazip.com | cut -f1-4 -d':')
+IP4=$(curl -4 -s icanhazip.com)
+IP6=$(curl -6 -s icanhazip.com | cut -f1-4 -d':')
 
-echo "IPv4 = ${IPv4}"
-echo "IPv6 = ${IPv6}"
-echo "IPv6 Random 4 : Cuối = ${IPv6Random}"
+echo "Internal ip = ${IP4}. Exteranl sub for ip6 = ${IP6}"
 
 echo "Bạn Muốn Tạo Bao Nhiêu Proxy? 1GB Ram Cho 3000 Proxy"
 read COUNT
@@ -137,4 +140,4 @@ bash /etc/rc.local
 
 gen_proxy_file_for_user
 
-export_proxy
+upload_proxy
